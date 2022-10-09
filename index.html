@@ -14,8 +14,7 @@
     </head>
     <body>
         <div class="container">
-            <div class="exercise-book">
-            <form>
+            <div class="exercise-book"><form>
                 <div class="row">
                     <div class="col">
                         <div class="form-floating mb-3">
@@ -28,8 +27,8 @@
                     <div class="col-8 student-section" id="student-section">
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-primary" onclick="addNoteblockTextarea()">Add Text</button>
-                            <button type="button" class="btn btn-primary">Add Image</button>
-                            <button type="button" class="btn btn-primary">Add Drawing</button>
+                            <button type="button" class="btn btn-primary" onclick="addNoteblockImage()">Add Image</button>
+                            <button type="button" class="btn btn-primary" disabled>Add Drawing</button>
                         </div>
                     </div>
                     <div class="col-3 teacher-section">
@@ -48,15 +47,15 @@
                         <button type="button" class="teacher-button teacher-button-save" onclick="saveTeacherFeedback()"></button>
                         <button type="button" class="teacher-button teacher-button-cancel" onclick="cancelTeacherFeedback()"></button>
                     </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                    <button id="studentModeBtn" type="button" class="btn btn-link" onclick="changeMode('student')">Change to 'Student' mode</button>
-                    <button id="teacherModeBtn" type="button" class="btn btn-link" onclick="changeMode('teacher')">Change to 'Teacher' mode</button>
                 </div>
-              </div>
-            </form>
-            </div>
+                <div class="row">
+                    <div class="col">
+                        <button id="studentModeBtn" type="button" class="btn btn-link" onclick="changeMode('student')">Change to 'Student' mode</button>
+                        <button id="teacherModeBtn" type="button" class="btn btn-link" onclick="changeMode('teacher')">Change to 'Teacher' mode</button>
+                        <button id="exportExerciseBtn" type="button" class="btn btn-info" onclick="exportExercise()">Export Exercise</button>
+                    </div>
+                </div>
+            </form></div>
         </div>
     </body>
 </html>

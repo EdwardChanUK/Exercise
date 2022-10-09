@@ -32,6 +32,17 @@ class ExercisePage {
         return newNoteblock;
     }
 
+    addNoteblockImage(){
+        var newNoteblock = {
+            id: this.newNoteblockId(),
+            seq: this.noteblocks.length - 1,
+            type: 'image',
+            image: ''
+        };        
+        this.noteblocks.push(newNoteblock);
+        return newNoteblock;
+    }
+
     getNoteblock(id){
         for(var i=this.noteblocks.length-1; i>=0; i--){
             if(this.noteblocks[i].id === id) return this.noteblocks[i];
@@ -42,6 +53,10 @@ class ExercisePage {
 
 const mode = 'student';
 const exercise1 = new ExercisePage();
+
+function exportExercise(){
+    console.log(exercise1);
+}
 
 function editNoteblockTextArea(id){
     var noteblock = exercise1.getNoteblock(id);
@@ -54,7 +69,19 @@ function editNoteblockTextArea(id){
     $('#noteblock-' + id + '-edit').show();
 }
 
-function cancelNoteblockTextArea(id){
+function editNoteblockImage(id){
+    var noteblock = exercise1.getNoteblock(id);
+    if(!noteblock){
+        console.error('Cannot find the noteblock by id: '+id);
+        return;
+    }
+    $('#noteblock-' + id + '-display').hide();
+    $('#noteblock-' + id + '-file').val('');
+    $('#noteblock-' + id + '-editimage').attr('src', noteblock.image);
+    $('#noteblock-' + id + '-edit').show();
+}
+
+function cancelNoteblock(id){
     if(confirm("Are you sure to cancel the change of note?")){
         $('#noteblock-' + id + '-edit').hide();
         $('#noteblock-' + id + '-display').show();
@@ -109,12 +136,53 @@ function addNoteblockTextarea(){
         </div>
         <div id="noteblock-` + noteblock.id + `-edit" class="noteblock-edit">
             <textarea id="noteblock-` + noteblock.id + `-textarea"></textarea>
-            <button type="button" class="noteblock-button noteblock-button-cancel" onclick="cancelNoteblockTextArea(` + noteblock.id + `)"></button>
+            <button type="button" class="noteblock-button noteblock-button-cancel" onclick="cancelNoteblock(` + noteblock.id + `)"></button>
             <button type="button" class="noteblock-button noteblock-button-save" onclick="saveNoteblockTextArea(` + noteblock.id + `)"></button>
         </div>
     </div>
 </div>`;
     $('#student-section').append(templateHtml);
+}
+
+function addNoteblockImage(){
+    var noteblock = exercise1.addNoteblockImage();
+    const templateHtml = `<div class="card" id="noteblock-` + noteblock.id + `">
+    <div class="card-body">
+        <div id="noteblock-` + noteblock.id + `-display" class="noteblock-display" style="display: none;">
+            <img id="noteblock-` + noteblock.id + `-displayimage" class="card-img-top noteblock-image">
+            <button type="button" class="noteblock-button noteblock-button-bin" onclick="removeNoteblock(` + noteblock.id + `)"></button>
+            <button type="button" class="noteblock-button noteblock-button-edit" onclick="editNoteblockImage(` + noteblock.id + `)"></button>
+        </div>
+        <div id="noteblock-` + noteblock.id + `-edit" class="noteblock-edit">
+            <img id="noteblock-` + noteblock.id + `-editimage" class="card-img-top noteblock-image">
+            <input id="noteblock-` + noteblock.id + `-file" type="file" accept="image/*" onchange='previewNoteblockImage(event, ` + noteblock.id + `)'>
+            <button type="button" class="noteblock-button noteblock-button-cancel" onclick="cancelNoteblock(` + noteblock.id + `)"></button>
+            <button type="button" class="noteblock-button noteblock-button-save" onclick="saveNoteblockImage(` + noteblock.id + `)"></button>
+        </div>
+    </div>
+</div>`;
+    $('#student-section').append(templateHtml);
+}
+
+function previewNoteblockImage(event, id){
+    const reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = () => {
+        const preview = document.getElementById('noteblock-'+id+'-editimage');
+        preview.src = reader.result;
+    };
+}
+
+function saveNoteblockImage(id){
+    var noteblock = exercise1.getNoteblock(id);
+    if(!noteblock){
+        console.error('Cannot find the noteblock by id: '+id);
+        return;
+    }
+    $('#noteblock-' + id + '-edit').hide();
+    noteblock.image = $('#noteblock-' + id + '-editimage').attr('src');
+    $('#noteblock-' + id + '-displayimage').attr('src', noteblock.image);
+    $('#noteblock-' + id + '-display').show();
 }
 
 function changeMode(mode){

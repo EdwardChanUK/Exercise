@@ -89,6 +89,15 @@
     background-image: url('../icons/no.png');
 }
 
+.noteblock-image{
+    border: 2px dashed black;
+    border-radius: 5px;
+    padding: 5px;
+    max-width: 80%;
+    width: auto;
+    height: auto;
+}
+
 h2{
     font-size: 14pt;
 }
